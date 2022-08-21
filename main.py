@@ -1,22 +1,34 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, status, Response
 import requests
 from prometheus_fastapi_instrumentator import Instrumentator
 import logging.config
+from pydantic import BaseModel
 
 # setup loggers
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 
+logger = logging.getLogger(__name__)
+
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    url = 'https://62f6640ba3bce3eed7c04b72.mockapi.io/items'
-    response = requests.get(url, {}, timeout=5)
-    return {"items": response.json() }
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+class ResponseData(BaseModel):
+    idUsuario: str
+    internalId: str = ""
 
 Instrumentator().instrument(app).expose(app)
+
+@app.get("/infoUsers/{idUsuario}")
+def read_root(idUsuario: str):
+    logger.debug("idUsuario recibido: " + idUsuario)
+    
+    url = 'https://63016ffbe71700618a3866e4.mockapi.io/users'
+    responseData = ResponseData(idUsuario= idUsuario)
+    
+    requestResult = requests.get(url + "?usuario=" + idUsuario, timeout=5)
+    
+    if(len(requestResult.json()) >= 1):
+        responseData.internalId = requestResult.json()[0]["internalId"]
+        return Response(content= responseData.json())
+    else:
+        return Response(status_code= status.HTTP_204_NO_CONTENT)
