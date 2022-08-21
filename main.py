@@ -17,7 +17,7 @@ class ResponseData(BaseModel):
 
 Instrumentator().instrument(app).expose(app)
 
-@app.get("/infoUsers/{idUsuario}")
+@app.get("/infoUsers/{idUsuario}", response_model=ResponseData)
 def read_root(idUsuario: str):
     logger.debug("idUsuario recibido: " + idUsuario)
     
