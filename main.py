@@ -19,7 +19,7 @@ Instrumentator().instrument(app).expose(app)
 
 @app.get("/infoUsers/{idUsuario}", response_model=ResponseData)
 def read_root(idUsuario: str):
-    logger.debug("idUsuario recibido: " + idUsuario)
+    logger.debug("idUsuario recibido : " + idUsuario)
     
     url = 'https://63016ffbe71700618a3866e4.mockapi.io/users'
     responseData = ResponseData(idUsuario= idUsuario)
