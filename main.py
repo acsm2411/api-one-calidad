@@ -1,4 +1,3 @@
-from typing import Union
 from fastapi import FastAPI, status, Response
 import requests
 from prometheus_fastapi_instrumentator import Instrumentator
