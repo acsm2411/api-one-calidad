@@ -5,7 +5,7 @@ from main import app
 client = TestClient(app)
 
 def test_route():
-    response = client.get('/infoUsers/Roslyn.Rempel')
+    response = client.get('/infoUsers/Anne_Beatty')
     assert response.status_code == 200
 
 def test_route_no_content():
