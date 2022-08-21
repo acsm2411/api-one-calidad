@@ -13,7 +13,7 @@ app = FastAPI()
 
 class ResponseData(BaseModel):
     idUsuario: str
-    internalId: str = ""
+    internalId: int = 0
 
 Instrumentator().instrument(app).expose(app)
 
